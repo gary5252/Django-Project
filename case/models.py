@@ -62,6 +62,7 @@ class Period(models.Model):
 class Case(models.Model):
     # CASCADE: 一旦所屬 Profile 遭到刪除，此整筆資料會同時刪除
     owner = models.ForeignKey(Profile, on_delete=CASCADE)
+    # null 預設為 false
     title = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
     contact = models.CharField(max_length=100)
