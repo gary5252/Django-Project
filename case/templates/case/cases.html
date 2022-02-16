@@ -1,50 +1,28 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-</head>
-
-<body>
-    <div id="navbar">
-        <a href="{% url 'cases' %}"><img src="{% static 'images/icon.png' %}" alt="icon.png"></a>
-        {% if request.user.is_authenticated %}
-        {{request.user.username}}
-        {% else %}
-        <a href="{% url 'login' %}">登入</a>
-        <a href="{% url 'cases' %}">註冊</a>
-        {% endif %}
-    </div>
-    <h1>Cases</h1>
-    <div id="cases-table">
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>日期</th>
-                    <th>標題</th>
-                    <th>金額</th>
-                    <th>分類</th>
-                    <th>檢視</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for case in cases %}
-                <tr>
-                    <td>{{case.createdon}}</td>
-                    <td>{{case.title}}</td>
-                    <td>{{case.amount}}</td>
-                    <td>{{case.category}}</td>
-                    <td>{{case.view}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</body>
-
-</html>
+{% extends 'base.html' %}
+{% block content %}
+<h1>Cases</h1>
+<div id="cases-table">
+    <table border="1">
+        <thead>
+            <tr>
+                <th>日期</th>
+                <th>標題</th>
+                <th>金額</th>
+                <th>分類</th>
+                <th>檢視</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for case in cases %}
+            <tr>
+                <td>{{case.createdon|date:"Y/m/d"}}</td>
+                <td>{{case.title}}</td>
+                <td>{{case.amount}}</td>
+                <td>{{case.category}}</td>
+                <td>{{case.view}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

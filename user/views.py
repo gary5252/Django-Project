@@ -1,10 +1,11 @@
 from django.shortcuts import redirect, render
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from sympy import Not
 # Create your views here.
 
 
 def user_login(request):
+    username, password = '', ''
     if request.method == 'POST':
         # username = request.POST.get('username')
         username = request.POST['username']
@@ -22,4 +23,11 @@ def user_login(request):
 
         # print(username, password)
 
-    return render(request, './user/login.html')
+    return render(request, './user/login.html', {'username': username, 'password': password})
+
+
+def user_logout(request):
+    if request.user.is_authenticated:
+        logout(request)
+
+    return redirect('login')
