@@ -17,4 +17,10 @@
     </p>
 </form>
 
+<div id="message">
+    {% if message %}
+    <p style="color: red;">{{message}}</p>
+    {% endif %}
+</div>
+
 {% endblock %}

@@ -1,9 +1,11 @@
+import email
 from operator import mod
 from pickle import TRUE
 from unicodedata import name
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.deletion import SET_NULL
+from sqlalchemy import null
 
 # Create your models here.
 
@@ -21,7 +23,7 @@ class City(models.Model):
 
     # 欄位顯示
     def __str__(self):
-        return f'{self.name}-{self.createdon}'
+        return self.name
 
 
 class Respondent(models.Model):
@@ -38,6 +40,7 @@ class Respondent(models.Model):
 
 
 class Profile(AbstractUser):
+    email = models.EmailField(unique=True, null=False)
     point = models.IntegerField(default=0)
     certification = models.BooleanField(default=False)
     city = models.ForeignKey(City, on_delete=SET_NULL, null=True)

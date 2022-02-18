@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Profile</h1>
+
+<ul>
+    <li>{{user.username}}</li>
+    <li>Email:{{user.email}}
+        {% if not user.certification %}
+        (<a href="">認證</a>:送100點)
+        {% endif %}
+    </li>
+    <li>點數:{{user.point}}</li>
+
+</ul>
+
+<a href="">資訊修改</a>
+<a href="">點數儲值</a>
+<!-- XX|length = XX的長度(django語法) ** == 的前後記得加空格否則會報錯(django語法要求)-->
+{% if user.case_set.all|length == 0 %}
+<h2>目前無發布專案</h2>
+{% else %}
+<div id="cases-table">
+    <table border="1">
+        <thead>
+            <tr>
+                <th>日期</th>
+                <th>標題</th>
+                <th>金額</th>
+                <th>分類</th>
+                <th>檢視</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- XX.YY_set.all : 透過XX的PK去反向鏈結YY的FK來搜尋YY的所有屬於XX的資料 -->
+            {% for case in user.case_set.all %}
+            <tr>
+                <td>{{case.createdon|date:"Y/m/d"}}</td>
+                <td>{{case.title}}</td>
+                <td>{{case.amount}}</td>
+                <td>{{case.category}}</td>
+                <td>{{case.view}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}
