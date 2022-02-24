@@ -1,9 +1,9 @@
 from email import message
 from django.shortcuts import redirect, render
 from django.contrib.auth import login, authenticate, logout
-from sympy import Not
 from .models import Profile
 from .forms import ProfileForm
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
@@ -34,6 +34,7 @@ def user_login(request):
     return render(request, './user/login.html', {'username': username, 'password': password, 'message': message})
 
 
+@login_required(login_url='login')
 def user_logout(request):
     if request.user.is_authenticated:
         logout(request)
@@ -63,6 +64,7 @@ def user_register(request):
     return render(request, './user/register.html', {'form': form})
 
 
+@login_required(login_url='login')
 def profile(request, id):
     # XX.objects.all() 全部轉物件  XX.objects.get() 單一搜尋  另還有filter見上面
     user = Profile.objects.get(id=id)

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Create Case</h1>
+<form action="" method="POST">
+    <!-- 在 Django 使用 POST 記得加入CSRF安全跨域請求 -->
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">建立</button>
+</form>
+
+{% endblock %}

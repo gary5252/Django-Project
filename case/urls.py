@@ -4,4 +4,6 @@ from . import views
 
 urlpatterns = [
     path('', views.cases, name='cases'),
+    path('create-case/', views.create_case, name='create-case'),
+    path('case/<str:id>', views.case_detail, name='case-detail'),
 ]

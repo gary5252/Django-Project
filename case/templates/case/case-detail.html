@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Case</h1>
+<ul>
+    <li>[{{case.category}}]<b>{{case.title}}</b>(檢視次數:{{case.view}})</li>
+    <li>上架日期:{{case.createdon|date:"Y/m/d"}}</li>
+    <li>專案狀態:{{case.state}}</li>
+    <li>發案人:{{case.owner.username|upper}}({{case.owner.city}})</li>
+    <li>金額:{{case.amount}}</li>
+    <!-- |linebreaks 內容換行 -->
+    <li>內容:{{case.description|linebreaks}}</li>
+    <li>技能:{{case.skill|linebreaks}}</li>
+    <li>合作方式:{{case.contact}}</li>
+    <li>合作週期:{{case.period}}</li>
+    <li>合作對象:
+        <!-- 這邊respondent要取得所有內容才能進行迭代 -->
+        {% for resp in case.respondent.all %}
+        {{resp}}|
+        {% endfor %}
+    </li>
+    <li>合作方式:
+        <!-- 同上 -->
+        {% for mode in case.mode.all %}
+        {{mode}}|
+        {% endfor %}
+    </li>
+</ul>
+{% endblock %}

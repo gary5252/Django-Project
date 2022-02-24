@@ -74,7 +74,8 @@ class Case(models.Model):
     amount = models.ForeignKey(Amount, null=True, on_delete=SET_NULL)
     period = models.ForeignKey(Period, null=True, on_delete=SET_NULL)
     respondent = models.ManyToManyField(Respondent)
-    state = models.ForeignKey(State, null=True, on_delete=SET_NULL)
+    state = models.ForeignKey(
+        State, null=True, on_delete=SET_NULL, default='新進案')
     mode = models.ManyToManyField(Mode)
 
     # 倒排序 越新發布的資料排越上面
@@ -82,4 +83,4 @@ class Case(models.Model):
         ordering = ['-createdon']
 
     def __str__(self):
-        return self.title
+        return f'{self.id}-{self.title}'

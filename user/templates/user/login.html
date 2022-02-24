@@ -2,6 +2,7 @@
 {% block content %}
 <h1>Login</h1>
 <form action="" method="POST">
+    <!-- form表單如果是用POST 記得加入 CSRF 跨域安全請求 -->
     {% csrf_token %}
     <div>
         <label for="username">帳號</label>
