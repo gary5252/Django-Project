@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Update Case</h1>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" name="confirm" value="修改">
+    <input type="submit" name="cancel" value="取消">
+    {% if page == "case" %}
+    <!-- 這邊要導回case 需要case.id   所以透過後台傳來的form去尋找id 
+    但是前端是透過instance的被賦予值去尋找id 所以要用instance而非直接使用case -->
+    <a href="{% url 'case' form.instance.id %}">返回</a>
+    {% else %}
+    <a href="{% url 'profile' request.user.id %}">返回</a>
+    {% endif %}
+</form>
+
+{% endblock %}

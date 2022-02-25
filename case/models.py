@@ -77,6 +77,7 @@ class Case(models.Model):
     state = models.ForeignKey(
         State, null=True, on_delete=SET_NULL, default='新進案')
     mode = models.ManyToManyField(Mode)
+    updatedon = models.DateTimeField(auto_now_add=True)
 
     # 倒排序 越新發布的資料排越上面
     class Meta:

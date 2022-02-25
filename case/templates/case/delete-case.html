@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Delete Case</h1>
+<h2>{{case.title}}</h2>
+<!-- |truncatechars:XX 限定字數在XX個 -->
+<p>{{case.description|truncatechars:30}}</p>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <input type="submit" name="confirm" value="確定刪除">
+    <input type="submit" name="cancel" value="取消">
+</form>
+
+{% endblock %}

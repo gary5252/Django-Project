@@ -1,4 +1,5 @@
 from email import message
+from urllib import response
 from django.shortcuts import redirect, render
 from django.contrib.auth import login, authenticate, logout
 from .models import Profile
@@ -68,4 +69,9 @@ def user_register(request):
 def profile(request, id):
     # XX.objects.all() 全部轉物件  XX.objects.get() 單一搜尋  另還有filter見上面
     user = Profile.objects.get(id=id)
-    return render(request, './user/profile.html', {'user': user})
+    # 設立cookie 儲存網頁變數
+    response = render(request, './user/profile.html', {'user': user})
+    # cookie 以key:value形式存在 函式('key','value')
+    response.set_cookie('page', 'profile')
+
+    return response
