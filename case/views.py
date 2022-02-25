@@ -56,7 +56,7 @@ def delete_case(request, id):
         # 為了讓選擇取消可以回到原本的case只能多寫這邊因為需要原來的id 而樓上因為刪除了直接導回首頁所以不用id
         if request.POST.get('cancel'):
             if page == 'case':
-                return redirect('case', id=case.id)
+                return redirect('case-detail', id=case.id)
         # 由於這邊需要先LOGIN才能進來所以進來了request就會有user的值所以可以直接取出user.id
         return redirect('profile', request.user.id)
 
@@ -82,6 +82,6 @@ def update_case(request, id):
                 # form.save_m2m()
         # 辨識cookies
         if page == 'case':
-            return redirect('case', case.id)
+            return redirect('case-detail', case.id)
         return redirect('profile', request.user.id)
     return render(request, './case/update-case.html', {'form': form, 'page': page})
