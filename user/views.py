@@ -1,5 +1,5 @@
-from email import message
-from urllib import response
+# from email import message
+# from urllib import response
 from django.shortcuts import redirect, render
 from django.contrib.auth import login, authenticate, logout
 from .models import Profile

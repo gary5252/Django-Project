@@ -33,7 +33,7 @@
             </tr>
         </thead>
         <tbody>
-            <!-- XX.YY_set.all : 透過XX的PK去反向鏈結YY的FK來搜尋YY的所有屬於XX的資料 -->
+            <!-- XX.YY_set.all : 透過XX的PK去反向鏈結YY的FK來搜尋YY的所有屬於XX的資料(後臺給的是user的資料) -->
             {% for case in user.case_set.all %}
             <tr>
                 <td>{{case.createdon|date:"Y/m/d"}}</td>
