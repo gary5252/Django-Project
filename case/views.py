@@ -6,7 +6,8 @@ from user.models import City
 from .forms import CreateCaseForm
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
-from django.db.models import Q
+from django.core.paginator import Paginator
+from .utils import search_cases, get_page_objects,page_num
 # Create your views here.
 
 
@@ -15,42 +16,35 @@ def cases(request):
     search = ''
     categorys = Category.objects.all()
     countys = City.objects.all()
+
+    category_id = request.COOKIES.get('category_id', 0)
+    county_id = request.COOKIES.get('county_id', 0)
+    search = request.COOKIES.get('search', '')
+
+    category_id = eval(category_id) if type(category_id) == str else 0
+    county_id = eval(county_id) if type(county_id) == str else 0
+
     if request.method == 'GET':
-        cases = Case.objects.all()
+        page = request.GET.get('page')
+        cases = search_cases(category_id, county_id, search)
 
     if request.method == 'POST':
         # 這邊get 到的是前端網頁select 的name
         # 轉換成數值讓前端網頁程式可以進行數值比對
-        category_id = eval(request.POST.get('category')) if request.POST.get('category') else 0
-        county_id = eval(request.POST.get('county')) if request.POST.get('county') else 0
+        category_id = eval(request.POST.get('category')
+                           ) if request.POST.get('category') else 0
+        county_id = eval(request.POST.get('county')
+                         ) if request.POST.get('county') else 0
         search = request.POST.get('search')
 
-        # Q 可以拿來用在 and/or 的多重篩選
-        category_q = Q(category_id=category_id)
-        # 透過case所屬owner去查找所屬profile裡的city.id 此雙重搜尋要使用雙底線__
-        county_q = Q(owner__city_id=county_id)
-        # XX__(雙底線)contains = YY : 在XX中是否有包含YY   ( | : or  ,  & : and )
-        search_q = Q(title__contains=search) | Q(description__contains=search)
+    cases = search_cases(category_id, county_id, search)
+    
+    page_obj = get_page_objects(cases, page, page_num)
+    context = {'categorys': categorys,
+                'countys': countys, 'category_id': category_id, 'county_id': county_id, 'search': search ,
+                'page_obj': page_obj, 'cases_length':len(cases)}
 
-        if category_id and county_id:
-            # 多重篩選  \是為了換行加的
-            cases = Case.objects.filter(category_q & county_q & search_q) if search else\
-             Case.objects.filter(category_q & county_q)
-            # cases = Case.objects.filter(category_id=category_id).filter(owner__city_id=county_id)
-        elif category_id:
-            # filter 多數篩選 篩選出來資料表裡category.id = 網頁前端藉由POST 傳遞回來的category_id
-            cases = Case.objects.filter(category_q & search_q) if search else\
-             Case.objects.filter(category_q)
-        elif county_id:
-            cases = Case.objects.filter(county_q & search_q) if search else\
-             Case.objects.filter(county_q)
-        elif search:
-            cases = Case.objects.filter(search_q)
-        else:
-            cases = Case.objects.all()
-        
-    return render(request, './case/cases.html', {'cases': cases, 'categorys': categorys,
-        'countys': countys, 'category_id': category_id, 'county_id': county_id, 'search': search})
+    return render(request, './case/cases.html', context = context)
 
 
 @login_required(login_url='login')

@@ -24,12 +24,13 @@
     </select>
     <input type="text" name="search" id="search" value="{{search}}">
     <button type="submit">搜尋</button>
+    專案數量:{{cases_length}}
 </form>
 <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
         {% endif %}
 
         <span class="current">
@@ -37,13 +38,13 @@
         </span>
 
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
         {% endif %}
     </span>
 </div>
 </p>
-{% if cases|length == 0 %}
+{% if page_obj|length == 0 %}
 <h2>目前無發布專案</h2>
 {% else %}
 <div id="cases-table">
@@ -58,7 +59,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for case in cases %}
+            {% for case in page_obj %}
             <tr>
                 <td>{{case.createdon|date:"Y/m/d"}}</td>
                 <td>
